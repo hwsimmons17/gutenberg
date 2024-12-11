@@ -1,18 +1,23 @@
 package app
 
 import (
+	"gutenberg/pkg"
 	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
-
 type App struct {
-	engine                     *gin.Engine
+	engine     *gin.Engine
+	repository pkg.BookRepository
+	bookReader pkg.BookReader
 }
 
-func InitApp() App {
+func InitApp(
+	repository pkg.BookRepository,
+	bookReader pkg.BookReader,
+) App {
 	engine := gin.New()
 	engine.Use(
 		gin.LoggerWithWriter(gin.DefaultWriter, "/drivers/location"),
@@ -31,12 +36,16 @@ func InitApp() App {
 	engine.Use(cors.New(config))
 
 	return App{
-		engine: engine,
+		engine:     engine,
+		repository: repository,
+		bookReader: bookReader,
 	}
 }
 
 func (a *App) Run() {
 	a.AttachStandardRoutes()
+	a.AttachUsersRoutes()
+	a.AttachBooksRoutes()
 
 	a.engine.Run()
 }
