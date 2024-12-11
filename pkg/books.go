@@ -6,6 +6,7 @@ import (
 
 type BookReader interface {
 	FetchBook(id int) (Book, error)
+	FetchBookText(id int) (string, error)
 }
 
 type BookRepository interface {

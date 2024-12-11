@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"gutenberg/pkg"
+	"io/ioutil"
 	"log"
 	"net/http"
 
@@ -192,4 +193,32 @@ func parseNodeToBook(id int, node *html.Node) (pkg.Book, error) {
 	}
 
 	return book, nil
+}
+
+func (c *bookClient) FetchBookText(id int) (string, error) {
+	client := &http.Client{}
+	r, err := http.NewRequest(http.MethodGet, fmt.Sprintf("https://www.gutenberg.org/files/%d/%d-0.txt", id, id), nil)
+	if err != nil {
+		log.Println("error creating request", err)
+		return "", errors.New("error creating request")
+	}
+	r.Header.Add("Content-Type", "application/json")
+	resp, err := client.Do(r)
+	if err != nil {
+		log.Println("error sending request", err)
+		return "", errors.New("error sending request")
+	}
+	defer resp.Body.Close()
+	if resp.StatusCode != 200 {
+		log.Println("unexpected status code", resp.StatusCode)
+		return "", fmt.Errorf("unexpected status code %d", resp.StatusCode)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println("error reading response body", err)
+		return "", errors.New("error reading response body")
+	}
+
+	return string(body), nil
 }
