@@ -1,0 +1,12 @@
+{
+    "editor.defaultFormatter": "golang.go",
+    "gopls": {
+        "analyses": {
+          "nilness": true
+        }
+      },
+      "cSpell.words": [
+        "typeform"
+      ],
+      "go.testTimeout": "30s"
+}
