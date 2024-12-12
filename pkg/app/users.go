@@ -21,6 +21,7 @@ func (a *App) AttachUsersRoutes() {
 		}
 		userID := uuid.NewString()
 
+		c.SetSameSite(http.SameSiteNoneMode)
 		c.SetCookie("user_id", userID, 2147483647, "/", "", true, true)
 		c.JSON(200, gin.H{"status": "ok"})
 	})
