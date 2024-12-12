@@ -26,7 +26,7 @@ func InitApp(
 	gin.SetMode(gin.ReleaseMode)
 
 	config := cors.Config{
-		AllowAllOrigins:  true,
+		AllowOrigins:     []string{"http://localhost:3000", "http://localhost:8080"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Content-Disposition", "Sec-Websocket-Protocol"},
 		ExposeHeaders:    []string{"Content-Length", "Content-Disposition"},

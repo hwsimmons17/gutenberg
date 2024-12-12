@@ -210,6 +210,9 @@ func (c *bookClient) FetchBookText(id int) (string, error) {
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != 200 {
+		if resp.StatusCode == 404 {
+			return "", errors.New("book text not found, invalid ID")
+		}
 		log.Println("unexpected status code", resp.StatusCode)
 		return "", fmt.Errorf("unexpected status code %d", resp.StatusCode)
 	}

@@ -9,7 +9,7 @@ import (
 )
 
 func (a *App) AttachBooksRoutes() {
-	a.engine.GET("/book/:id", getUser(), func(c *gin.Context) {
+	a.engine.GET("/books/:id", getUser(), func(c *gin.Context) {
 		user, ok := c.Get("user_id")
 		if !ok {
 			c.JSON(500, gin.H{"error": "error getting user_id"})
