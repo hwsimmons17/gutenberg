@@ -27,6 +27,25 @@ func (a *App) AttachBooksRoutes() {
 		}
 		c.JSON(200, book)
 	})
+	a.engine.GET("/books/:id/analyze", getUser(), func(c *gin.Context) {
+		prompt, ok := c.GetQuery("prompt")
+		if !ok {
+			c.JSON(400, gin.H{"error": "must provide a prompt"})
+			return
+		}
+		bookID, err := strconv.Atoi(c.Param("id"))
+		if err != nil {
+			c.JSON(500, gin.H{"error": "error parsing book id, must be an integer"})
+			return
+		}
+
+		analysis, err := handlers.AnalyzeBook(c, a.bookReader, a.responseGenerator, bookID, prompt)
+		if err != nil {
+			c.JSON(500, gin.H{"error": err.Error()})
+			return
+		}
+		c.JSON(200, analysis)
+	})
 
 	a.engine.GET("/books", getUser(), func(c *gin.Context) {
 		user, ok := c.Get("user_id")

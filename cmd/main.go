@@ -2,6 +2,7 @@ package main
 
 import (
 	"gutenberg/pkg/app"
+	"gutenberg/pkg/dependencies/claude"
 	"gutenberg/pkg/dependencies/ebooks"
 	"gutenberg/pkg/dependencies/postgres"
 	"os"
@@ -17,7 +18,9 @@ func main() {
 
 	bookReader := ebooks.NewClient()
 
-	server := app.InitApp(repository, bookReader)
+	responseGenerator := claude.NewResponseGenerator(os.Getenv("CLAUDE_KEY"))
+
+	server := app.InitApp(repository, bookReader, responseGenerator)
 
 	server.Run()
 }

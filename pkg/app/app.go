@@ -9,14 +9,16 @@ import (
 )
 
 type App struct {
-	engine     *gin.Engine
-	repository pkg.BookRepository
-	bookReader pkg.BookReader
+	engine            *gin.Engine
+	repository        pkg.BookRepository
+	bookReader        pkg.BookReader
+	responseGenerator pkg.ResponseGenerator
 }
 
 func InitApp(
 	repository pkg.BookRepository,
 	bookReader pkg.BookReader,
+	responseGenerator pkg.ResponseGenerator,
 ) App {
 	engine := gin.New()
 	engine.Use(
@@ -36,9 +38,10 @@ func InitApp(
 	engine.Use(cors.New(config))
 
 	return App{
-		engine:     engine,
-		repository: repository,
-		bookReader: bookReader,
+		engine:            engine,
+		repository:        repository,
+		bookReader:        bookReader,
+		responseGenerator: responseGenerator,
 	}
 }
 

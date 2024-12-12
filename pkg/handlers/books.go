@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"gutenberg/pkg"
 
 	"github.com/google/uuid"
@@ -49,4 +50,12 @@ func GetBook(ctx context.Context, bookID int, userID uuid.UUID, bookRepo pkg.Boo
 
 func GetBooks(ctx context.Context, userID uuid.UUID, bookRepo pkg.BookRepository) ([]pkg.Book, error) {
 	return bookRepo.ReadBooksForUser(ctx, userID)
+}
+
+func AnalyzeBook(ctx context.Context, bookReader pkg.BookReader, responseGenerator pkg.ResponseGenerator, bookID int, prompt string) (string, error) {
+	text, err := bookReader.FetchBookText(bookID)
+	if err != nil {
+		return "", err
+	}
+	return responseGenerator.GenerateResponse(ctx, fmt.Sprintf("Prompt: %s\n\n Text to analyze: %s", prompt, text))
 }

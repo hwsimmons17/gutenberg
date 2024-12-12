@@ -76,3 +76,7 @@ type BookRepository interface {
 	SaveBookSubjects(ctx context.Context, subjects []BookSubject) error
 	SaveUserBook(ctx context.Context, userBook UserBook) error
 }
+
+type ResponseGenerator interface {
+	GenerateResponse(ctx context.Context, prompt string) (string, error)
+}
