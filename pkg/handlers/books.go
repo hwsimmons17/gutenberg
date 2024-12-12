@@ -8,12 +8,13 @@ import (
 )
 
 func GetBook(ctx context.Context, bookID int, userID uuid.UUID, bookRepo pkg.BookRepository, bookReader pkg.BookReader) (pkg.BookWithText, error) {
-	book, err := bookRepo.ReadBook(ctx, bookID)
-	if err != nil && err.Error() != "sql: no rows in result set" {
+	text, err := bookReader.FetchBookText(bookID)
+	if err != nil {
 		return pkg.BookWithText{}, err
 	}
-	text, errr := bookReader.FetchBookText(bookID)
-	if errr != nil {
+
+	book, err := bookRepo.ReadBook(ctx, bookID)
+	if err != nil && err.Error() != "sql: no rows in result set" {
 		return pkg.BookWithText{}, err
 	}
 	if err == nil {
