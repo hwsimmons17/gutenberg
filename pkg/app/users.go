@@ -21,7 +21,7 @@ func (a *App) AttachUsersRoutes() {
 		}
 		userID := uuid.NewString()
 
-		c.SetCookie("user_id", userID, 2147483647, "/", "", false, true)
+		c.SetCookie("user_id", userID, 2147483647, "/", "", true, false)
 		c.JSON(200, gin.H{"status": "ok"})
 	})
 }
