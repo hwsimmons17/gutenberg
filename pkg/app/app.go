@@ -21,10 +21,7 @@ func InitApp(
 	responseGenerator pkg.ResponseGenerator,
 ) App {
 	engine := gin.New()
-	engine.Use(
-		gin.LoggerWithWriter(gin.DefaultWriter, "/drivers/location"),
-		gin.Recovery(),
-	)
+	engine.Use(gin.Recovery())
 	gin.SetMode(gin.ReleaseMode)
 
 	config := cors.Config{
