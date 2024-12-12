@@ -60,6 +60,17 @@ func (r *repository) SaveBookSubjects(ctx context.Context, subjects []pkg.BookSu
 }
 
 func (r *repository) SaveUserBook(ctx context.Context, userBook pkg.UserBook) error {
-	_, err := r.db.NewInsert().Model(&userBook).Exec(ctx)
+	exists, err := r.db.NewSelect().
+		Model(&userBook).
+		Where("user_id = ? AND book_id = ?", userBook.UserID, userBook.BookID).
+		Exists(ctx)
+	if err != nil {
+		return err
+	}
+	if exists {
+		return nil
+	}
+
+	_, err = r.db.NewInsert().Model(&userBook).Exec(ctx)
 	return err
 }

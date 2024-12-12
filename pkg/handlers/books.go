@@ -19,6 +19,12 @@ func GetBook(ctx context.Context, bookID int, userID uuid.UUID, bookRepo pkg.Boo
 		return pkg.BookWithText{}, err
 	}
 	if err == nil {
+		if err := bookRepo.SaveUserBook(ctx, pkg.UserBook{
+			UserID: userID,
+			BookID: bookID,
+		}); err != nil {
+			return pkg.BookWithText{}, err
+		}
 		return pkg.BookWithText{Book: book, Text: text}, nil
 	}
 	newBook, err := bookReader.FetchBook(bookID)
