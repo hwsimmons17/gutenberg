@@ -25,7 +25,7 @@ func InitApp(
 	gin.SetMode(gin.ReleaseMode)
 
 	config := cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000", "https://gutenberg-frontend.vercel.app"},
+		AllowOrigins:     []string{"http://localhost:3000", "https://gutenberg-frontend.vercel.app", "https://softwareequipment.com"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "HEAD", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "Authorization", "Content-Disposition", "Sec-Websocket-Protocol"},
 		ExposeHeaders:    []string{"Content-Length", "Content-Disposition"},
